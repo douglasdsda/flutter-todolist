@@ -18,6 +18,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends ModularState<HomePage, HomeController> {
   //use 'controller' variable to access controller
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +38,10 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           );
         }
 
-        if(controller.todoList.data == null) {
-          return Center(child: CircularProgressIndicator(),);
+        if (controller.todoList.data == null) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
 
         List<TodoModel> lista = controller.todoList.data;
@@ -45,27 +49,56 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         return ListView.builder(
             itemCount: lista.length,
             itemBuilder: (context, index) {
-
               TodoModel model = lista[index];
-              return CheckboxListTile(
-                title: Text(model.title),
-                value: model.check,
-                onChanged: (check){
-                  model.check = check;
-                  model.save();
-                },
-              );
+              return ListTile(
+                  title: Text(model.title),
+                  trailing: Checkbox(
+                    value: model.check,
+                    onChanged: (check) {
+                      model.check = check;
+                      model.save();
+                    },
+                  ),
+                  onTap: (){
+                    _showDialog(model);
+                  },
+                  );
             });
       }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: _showDialog,
         child: Icon(Icons.add),
       ),
     );
   }
 
- _showDialog(){
-   
- }
-
+  _showDialog([TodoModel model]) {
+    model ??= TodoModel();
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(model.title != ''? 'Edição': 'Novo'),
+            content: TextFormField(
+               initialValue: model.title,
+              onChanged: (value) => model.title = value,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: 'Escreva...'),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Modular.to.pop();
+                  },
+                  child: Text('Cancelar')),
+              FlatButton(
+                  onPressed: () async {
+                    await model.save();
+                    Modular.to.pop();
+                  },
+                  child: Text('Adicionar'))
+            ],
+          );
+        });
+  }
 }
