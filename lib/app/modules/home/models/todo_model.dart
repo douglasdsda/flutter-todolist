@@ -28,4 +28,8 @@ class TodoModel {
     }
   }
 
+  Future remove() {
+    return reference.delete();
+  }
+
 }

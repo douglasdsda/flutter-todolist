@@ -18,8 +18,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends ModularState<HomePage, HomeController> {
   //use 'controller' variable to access controller
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,18 +49,24 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             itemBuilder: (context, index) {
               TodoModel model = lista[index];
               return ListTile(
-                  title: Text(model.title),
-                  trailing: Checkbox(
-                    value: model.check,
-                    onChanged: (check) {
-                      model.check = check;
-                      model.save();
-                    },
-                  ),
-                  onTap: (){
-                    _showDialog(model);
+                title: Text(model.title),
+                leading: IconButton(
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                    onPressed: model.remove),
+                trailing: Checkbox(
+                  value: model.check,
+                  onChanged: (check) {
+                    model.check = check;
+                    model.save();
                   },
-                  );
+                ),
+                onTap: () {
+                  _showDialog(model);
+                },
+              );
             });
       }),
       floatingActionButton: FloatingActionButton(
@@ -78,9 +82,9 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         context: context,
         builder: (_) {
           return AlertDialog(
-            title: Text(model.title != ''? 'Edição': 'Novo'),
+            title: Text(model.title != '' ? 'Edição' : 'Novo'),
             content: TextFormField(
-               initialValue: model.title,
+              initialValue: model.title,
               onChanged: (value) => model.title = value,
               decoration: InputDecoration(
                   border: OutlineInputBorder(), labelText: 'Escreva...'),
