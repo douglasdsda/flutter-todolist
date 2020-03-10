@@ -55,12 +55,16 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                       Icons.delete,
                       color: Colors.red,
                     ),
-                    onPressed: model.remove),
+                    onPressed: (){
+                      controller.delete(model);
+
+                    }),
                 trailing: Checkbox(
                   value: model.check,
                   onChanged: (check) {
                     model.check = check;
-                    model.save();
+                      controller.save(model);
+                    
                   },
                 ),
                 onTap: () {
@@ -97,7 +101,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                   child: Text('Cancelar')),
               FlatButton(
                   onPressed: () async {
-                    await model.save();
+                    await controller.save(model);
                     Modular.to.pop();
                   },
                   child: Text('Adicionar'))

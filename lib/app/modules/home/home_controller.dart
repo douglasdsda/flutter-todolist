@@ -7,19 +7,22 @@ part 'home_controller.g.dart';
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
- final ITodoRepository repository;
+  final ITodoRepository repository;
 
-   @observable
-   ObservableStream<List<TodoModel>> todoList;
+  @observable
+  ObservableStream<List<TodoModel>> todoList;
 
-  _HomeControllerBase(ITodoRepository this.repository){
+  _HomeControllerBase(ITodoRepository this.repository) {
     getList();
   }
 
- @action
- getList(){
-   todoList = repository.getTodos().asObservable();
+  @action
+  getList() {
+    todoList = repository.getTodos().asObservable();
+  }
 
- }
-
+  Future save(TodoModel model) => repository.save(model);
+  
+ Future delete(TodoModel model) => repository.delete(model);
+  
 }
