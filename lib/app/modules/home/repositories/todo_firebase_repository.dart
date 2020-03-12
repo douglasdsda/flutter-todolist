@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todolist/app/modules/home/models/todo_model.dart';
 import 'package:todolist/app/modules/home/repositories/todo_repository_interface.dart';
 
-class TodoRepository implements ITodoRepository {
+class TodoFirebaseRepository implements ITodoRepository {
   final Firestore firestore;
 
-  TodoRepository(this.firestore);
+  TodoFirebaseRepository(this.firestore);
 
   @override
   Stream<List<TodoModel>> getTodos() {

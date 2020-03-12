@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import 'package:todolist/app/modules/home/components/item_tiles.dart';
 import 'package:todolist/app/modules/home/models/todo_model.dart';
 import 'home_controller.dart';
 
@@ -48,26 +49,9 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             itemCount: lista.length,
             itemBuilder: (context, index) {
               TodoModel model = lista[index];
-              return ListTile(
-                title: Text(model.title),
-                leading: IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    ),
-                    onPressed: (){
-                      controller.delete(model);
-
-                    }),
-                trailing: Checkbox(
-                  value: model.check,
-                  onChanged: (check) {
-                    model.check = check;
-                      controller.save(model);
-                    
-                  },
-                ),
-                onTap: () {
+              return ItemTile(
+                model: model,
+                onTap: (){
                   _showDialog(model);
                 },
               );
